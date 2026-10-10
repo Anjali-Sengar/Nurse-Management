@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Dashboard — Smart Nurse Management System</title>
+<meta name="description" content="Doctor dashboard for reviewing patients, issuing instructions and prescriptions, and monitoring nurse updates.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="doctor-dashboard.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============================= SIDEBAR ============================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2 6 4-14 2 8h6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="brand-text">Smart Nurse</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Dashboard sections">
+      <ul>
+        <li><a href="#" class="nav-item active" data-section="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="patients">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>My Patients</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="records">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+          <span>Patient Records</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="prescriptions">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="4"/><path d="M5 12h14"/></svg>
+          <span>Prescriptions</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="instructions">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3-5 3V6a2 2 0 0 1 2-2z"/></svg>
+          <span>Doctor Instructions</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="updates">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2 6 4-14 2 8h4"/></svg>
+          <span>Nurse Updates</span>
+          <span class="nav-count" id="navUpdateCount">0</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Messages</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="reports">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h11l5 5v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 13h8M8 17h8M8 9h3"/></svg>
+          <span>Reports/Documents</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span>Notifications</span>
+          <span class="nav-count" id="navNotifCount">0</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>Profile</span>
+        </a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/logout" class="nav-item logout" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ============================= MAIN ============================= -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <div class="topbar-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">An overview of your assigned patients today.</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="live-clock" id="liveClock">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="clockText">--:--</span>
+        </div>
+        <button class="icon-btn" id="topNotifBtn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span class="icon-dot" id="topNotifDot"></span>
+        </button>
+        <button class="btn btn-primary" id="quickInstructionBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <span>New Instruction</span>
+        </button>
+        <div class="topbar-profile">
+          <div class="avatar">AV</div>
+          <div class="profile-meta">
+            <strong>Dr. Aman Verma</strong>
+            <span>General Medicine</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============================= DASHBOARD ============================= -->
+      <section class="dashboard-section" id="section-dashboard">
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statAssigned">0</span>
+              <span class="summary-label">Assigned Patients</span>
+            </div>
+          </div>
+          <div class="summary-card summary-card-urgent">
+            <div class="summary-icon icon-red"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statAttention">0</span>
+              <span class="summary-label">Patients Requiring Attention</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2 6 4-14 2 8h4"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statPendingUpdates">0</span>
+              <span class="summary-label">Pending Updates</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon icon-teal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statAppointments">0</span>
+              <span class="summary-label">Today's Appointments</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-columns">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Patients Requiring Attention</h2>
+                <p>Sorted by priority — review the most urgent cases first.</p>
+              </div>
+            </div>
+            <div id="attentionList" class="row-list"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Latest Nurse Updates</h2>
+                <p>Most recent observations from your nursing team.</p>
+              </div>
+              <button class="btn btn-secondary btn-sm" data-goto="updates">View all</button>
+            </div>
+            <div id="dashUpdatesList" class="update-list"></div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ============================= MY PATIENTS ============================= -->
+      <section class="dashboard-section" id="section-patients" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>My Patients</h2>
+              <p>Patients currently authorized to your care.</p>
+            </div>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" id="patientSearch" placeholder="Search by name or room…">
+            </div>
+          </div>
+          <div class="row-head patient-row-grid">
+            <span>Patient</span><span>Room/Bed</span><span>Age</span><span>Condition / Status</span><span>Last Update</span><span>Priority</span><span></span>
+          </div>
+          <div id="patientList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PATIENT RECORDS ============================= -->
+      <section class="dashboard-section" id="section-records" hidden>
+        <div class="notice-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p>Records shown here are limited to patients authorized to you. Every record you open is logged for audit purposes.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Patient Records</h2>
+              <p>Search full medical records, history and documents.</p>
+            </div>
+            <div class="filter-group" id="recordsFilterGroup">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="Critical">Critical</button>
+              <button class="chip" data-filter="Serious">Serious</button>
+              <button class="chip" data-filter="Stable">Stable</button>
+            </div>
+          </div>
+          <div class="record-grid" id="recordGrid"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PRESCRIPTIONS ============================= -->
+      <section class="dashboard-section" id="section-prescriptions" hidden>
+        <div class="notice-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <p>Prescriptions are entered here by you, the authorized doctor. The system does not suggest medicines or dosages — it only records and schedules what you prescribe.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>New Prescription</h2>
+              <p>Create a prescription for one of your assigned patients.</p>
+            </div>
+          </div>
+          <form id="prescriptionForm" class="form-grid">
+            <label class="field">
+              <span>Patient</span>
+              <select id="rxPatient" required></select>
+            </label>
+            <label class="field">
+              <span>Medicine name</span>
+              <input type="text" id="rxMedicine" placeholder="e.g. Amoxicillin" required>
+            </label>
+            <label class="field">
+              <span>Dosage</span>
+              <input type="text" id="rxDosage" placeholder="e.g. 250mg" required>
+            </label>
+            <label class="field">
+              <span>Frequency</span>
+              <select id="rxFrequency" required>
+                <option value="">Select frequency</option>
+                <option>Once daily</option>
+                <option>Twice daily</option>
+                <option>Three times daily</option>
+                <option>Every 8 hours</option>
+                <option>Every 6 hours</option>
+                <option>As needed (PRN)</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Scheduled times</span>
+              <input type="text" id="rxTimes" placeholder="e.g. 08:00, 14:00, 20:00" required>
+            </label>
+            <label class="field">
+              <span>Duration</span>
+              <input type="text" id="rxDuration" placeholder="e.g. 5 days" required>
+            </label>
+            <label class="field field-full">
+              <span>Additional instructions</span>
+              <textarea id="rxInstructions" rows="3" placeholder="e.g. Take after food. Monitor for allergic reaction."></textarea>
+            </label>
+            <div class="field-full form-actions">
+              <button type="reset" class="btn btn-secondary">Clear</button>
+              <button type="submit" class="btn btn-primary">Add Prescription</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Prescriptions Issued</h2>
+              <p>All active prescriptions across your patients.</p>
+            </div>
+          </div>
+          <div class="row-head rx-row-grid">
+            <span>Medicine</span><span>Patient</span><span>Dosage / Frequency</span><span>Scheduled Times</span><span>Duration</span>
+          </div>
+          <div id="prescriptionList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= DOCTOR INSTRUCTIONS ============================= -->
+      <section class="dashboard-section" id="section-instructions" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Send Instruction to Nursing Team</h2>
+              <p>Instructions become workflow tasks for the assigned nurse — they don't alter any record on their own.</p>
+            </div>
+          </div>
+          <form id="instructionForm" class="form-grid">
+            <label class="field">
+              <span>Select patient</span>
+              <select id="instrPatient" required></select>
+            </label>
+            <label class="field">
+              <span>Priority</span>
+              <select id="instrPriority" required>
+                <option value="high">High</option>
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+              </select>
+            </label>
+            <label class="field field-full">
+              <span>Instruction</span>
+              <textarea id="instrText" rows="3" placeholder="e.g. Monitor blood pressure every 4 hours and report if systolic exceeds 150." required></textarea>
+            </label>
+            <label class="field field-full">
+              <span>Additional notes (optional)</span>
+              <textarea id="instrNotes" rows="2" placeholder="Any context useful for the nursing team…"></textarea>
+            </label>
+            <label class="field field-full">
+              <span>Attach document (optional)</span>
+              <input type="file" id="instrAttachment">
+              <span class="field-hint">Accepted: lab reports, scans, referral letters (PDF, JPG, PNG).</span>
+            </label>
+            <div class="field-full form-actions">
+              <button type="reset" class="btn btn-secondary">Clear</button>
+              <button type="submit" class="btn btn-primary">Send Instruction</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Instructions Sent</h2>
+              <p>Track acknowledgement status from the nursing team.</p>
+            </div>
+          </div>
+          <div class="row-head instr-row-grid">
+            <span>Patient</span><span>Instruction</span><span>Date / Time</span><span>Priority</span><span>Status</span>
+          </div>
+          <div id="instructionList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= NURSE UPDATES ============================= -->
+      <section class="dashboard-section" id="section-updates" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Nurse Updates</h2>
+              <p>Observations and task progress logged by your nursing team.</p>
+            </div>
+          </div>
+          <div id="updatesList" class="update-list update-list-full"></div>
+        </div>
+      </section>
+
+      <!-- ============================= MESSAGES ============================= -->
+      <section class="dashboard-section" id="section-messages" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Messages</h2>
+              <p>Secure conversations with nurses and hospital admin.</p>
+            </div>
+          </div>
+          <div id="messageList" class="message-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= REPORTS / DOCUMENTS ============================= -->
+      <section class="dashboard-section" id="section-reports" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Reports &amp; Documents</h2>
+              <p>Lab reports, scans and referral letters for your patients.</p>
+            </div>
+          </div>
+          <div class="row-head doc-row-grid">
+            <span>Document</span><span>Patient</span><span>Type</span><span>Uploaded</span><span></span>
+          </div>
+          <div id="reportsList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= NOTIFICATIONS ============================= -->
+      <section class="dashboard-section" id="section-notifications" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Notifications</h2>
+              <p>Nurse updates, urgent alerts and schedule changes.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="markAllReadBtn">Mark all as read</button>
+          </div>
+          <div id="notificationList" class="notification-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PROFILE ============================= -->
+      <section class="dashboard-section" id="section-profile" hidden>
+        <div class="panel profile-panel">
+          <div class="profile-header">
+            <div class="avatar avatar-lg">AV</div>
+            <div>
+              <h2>Dr. Aman Verma</h2>
+              <p>General Medicine · MBBS, MD</p>
+            </div>
+          </div>
+          <div class="profile-details">
+            <div><span class="shift-label">Doctor ID</span><strong>SN-DOC-0217</strong></div>
+            <div><span class="shift-label">Hospital</span><strong>Sunrise Multi-Specialty Hospital</strong></div>
+            <div><span class="shift-label">Email</span><strong>aman.verma@sunrisehospital.org</strong></div>
+            <div><span class="shift-label">Phone</span><strong>+91 98XXX XXXXX</strong></div>
+            <div><span class="shift-label">Department</span><strong>General Medicine, Ward B</strong></div>
+            <div><span class="shift-label">Access Level</span><strong>Doctor — authorized patients only</strong></div>
+          </div>
+          <div class="notice-banner" style="margin-top:22px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <p>Your account access is role-based and limited to patients assigned to you within your hospital. All record access is logged for security and audit purposes.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============================= PATIENT PROFILE DRAWER ============================= -->
+<div class="drawer-overlay" id="drawerOverlay">
+  <div class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerPatientName">
+    <div class="drawer-head">
+      <div>
+        <span class="patient-id" id="drawerPatientId">P-0000</span>
+        <h2 id="drawerPatientName">Patient Name</h2>
+        <p id="drawerPatientMeta">Room · Age · Condition</p>
+      </div>
+      <button class="icon-btn" id="drawerClose" aria-label="Close patient profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-tabs" id="drawerTabs">
+      <button class="drawer-tab active" data-tab="basic">Basic Info</button>
+      <button class="drawer-tab" data-tab="history">Medical History</button>
+      <button class="drawer-tab" data-tab="notes">Doctor Notes</button>
+      <button class="drawer-tab" data-tab="observations">Nurse Observations</button>
+      <button class="drawer-tab" data-tab="prescriptions">Prescriptions</button>
+      <button class="drawer-tab" data-tab="documents">Reports</button>
+      <button class="drawer-tab" data-tab="activity">Activity Timeline</button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="drawer-panel active" id="tab-basic"></div>
+      <div class="drawer-panel" id="tab-history"></div>
+      <div class="drawer-panel" id="tab-notes"></div>
+      <div class="drawer-panel" id="tab-observations"></div>
+      <div class="drawer-panel" id="tab-prescriptions"></div>
+      <div class="drawer-panel" id="tab-documents"></div>
+      <div class="drawer-panel" id="tab-activity"></div>
+    </div>
+
+    <div class="drawer-footer">
+      <button class="btn btn-secondary" data-drawer-action="instruction">Send Instruction</button>
+      <button class="btn btn-primary" data-drawer-action="prescription">New Prescription</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="doctor-dashboard.js"></script>
+</body>
+</html>

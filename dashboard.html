@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nurse Dashboard — Smart Nurse Management System</title>
+<meta name="description" content="Nurse dashboard for viewing tasks, patients, medication schedules and doctor instructions.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============================= SIDEBAR ============================= -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2 6 4-14 2 8h6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="brand-text">Smart Nurse</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Dashboard sections">
+      <ul>
+        <li><a href="#" class="nav-item active" data-section="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="tasks">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2 2 4-4"/></svg>
+          <span>My Tasks</span>
+          <span class="nav-count" id="navTaskCount">0</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="patients">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>Patients</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="medication">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="4"/><path d="M5 12h14"/></svg>
+          <span>Medication Schedule</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="instructions">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3-5 3V6a2 2 0 0 1 2-2z"/></svg>
+          <span>Doctor Instructions</span>
+          <span class="nav-count nav-count-alert" id="navInstructionCount">0</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="messages">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Messages</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="handover">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          <span>Handover</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span>Notifications</span>
+          <span class="nav-count" id="navNotifCount">0</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="shift">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <span>My Shift</span>
+        </a></li>
+        <li><a href="#" class="nav-item" data-section="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          <span>Profile</span>
+        </a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="/logout" class="nav-item logout" id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ============================= MAIN ============================= -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+
+      <div class="topbar-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSubtitle">Here's what needs your attention right now.</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="live-clock" id="liveClock">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span id="clockText">--:--</span>
+        </div>
+        <button class="icon-btn" id="topNotifBtn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+          <span class="icon-dot" id="topNotifDot"></span>
+        </button>
+        <button class="btn btn-urgent" id="urgentBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <span>Report Urgent</span>
+        </button>
+        <div class="topbar-profile">
+          <div class="avatar">RK</div>
+          <div class="profile-meta">
+            <strong>Nurse Riya Kapoor</strong>
+            <span>Ward B · General Medicine</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============================= DASHBOARD ============================= -->
+      <section class="dashboard-section" id="section-dashboard">
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-icon icon-blue"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statTotal">0</span>
+              <span class="summary-label">Today's Tasks</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon icon-teal"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statCompleted">0</span>
+              <span class="summary-label">Completed</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-icon icon-amber"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statPending">0</span>
+              <span class="summary-label">Pending</span>
+            </div>
+          </div>
+          <div class="summary-card summary-card-urgent">
+            <div class="summary-icon icon-red"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+            <div class="summary-info">
+              <span class="summary-value" id="statUrgent">0</span>
+              <span class="summary-label">Urgent Patients</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Today's Tasks</h2>
+              <p>Ordered by scheduled time — complete tasks as you finish them.</p>
+            </div>
+            <div class="filter-group" id="dashFilterGroup">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="high">High priority</button>
+              <button class="chip" data-filter="pending">Pending</button>
+            </div>
+          </div>
+          <div class="row-head task-row-grid">
+            <span>Time</span><span>Patient</span><span>Room/Bed</span><span>Task</span><span>Priority</span><span>Status</span><span></span>
+          </div>
+          <div id="taskList" class="row-list"></div>
+        </div>
+
+      </section>
+
+      <!-- ============================= MY TASKS ============================= -->
+      <section class="dashboard-section" id="section-tasks" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>My Tasks</h2>
+              <p>Every task assigned to you for the current shift.</p>
+            </div>
+            <div class="filter-group" id="tasksFilterGroup">
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="high">High</button>
+              <button class="chip" data-filter="medium">Medium</button>
+              <button class="chip" data-filter="low">Low</button>
+              <button class="chip" data-filter="completed">Completed</button>
+            </div>
+          </div>
+          <div class="row-head task-row-grid">
+            <span>Time</span><span>Patient</span><span>Room/Bed</span><span>Task</span><span>Priority</span><span>Status</span><span></span>
+          </div>
+          <div id="fullTaskList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= PATIENTS ============================= -->
+      <section class="dashboard-section" id="section-patients" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Patients</h2>
+              <p>Patients currently assigned to you.</p>
+            </div>
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" id="patientSearch" placeholder="Search by name or room…">
+            </div>
+          </div>
+          <div class="patient-grid" id="patientGrid"></div>
+        </div>
+      </section>
+
+      <!-- ============================= MEDICATION ============================= -->
+      <section class="dashboard-section" id="section-medication" hidden>
+        <div class="notice-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <p>This schedule reflects <strong>doctor-approved instructions only</strong>. The system does not select medicines or set dosages — it converts what the doctor has prescribed into a workflow you can track.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Medication Schedule</h2>
+              <p>Upcoming and completed medication tasks for your patients.</p>
+            </div>
+          </div>
+          <div class="row-head med-row-grid">
+            <span>Medicine</span><span>Patient</span><span>Doctor-Approved Instruction</span><span>Scheduled Time</span><span>Status</span>
+          </div>
+          <div id="medicationList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= DOCTOR INSTRUCTIONS ============================= -->
+      <section class="dashboard-section" id="section-instructions" hidden>
+        <div class="notice-banner">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+          <p>Instructions are entered by the assigned doctor. Acknowledging an instruction confirms you've read it — it does not alter the treatment plan.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Doctor Instructions</h2>
+              <p>Review and acknowledge instructions from your patients' doctors.</p>
+            </div>
+          </div>
+          <div class="row-head instr-row-grid">
+            <span>Patient</span><span>Instruction</span><span>Date / Time</span><span>Priority</span><span></span>
+          </div>
+          <div id="instructionList" class="row-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= MESSAGES ============================= -->
+      <section class="dashboard-section" id="section-messages" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Messages</h2>
+              <p>Secure conversations with doctors and admins on your ward.</p>
+            </div>
+          </div>
+          <div id="messageList" class="message-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= HANDOVER ============================= -->
+      <section class="dashboard-section" id="section-handover" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Shift Handover</h2>
+              <p>Summary to pass on to the incoming nurse. Review before submitting.</p>
+            </div>
+            <button class="btn btn-primary btn-sm" id="submitHandoverBtn">Submit Handover</button>
+          </div>
+
+          <div class="handover-grid">
+            <div class="handover-block">
+              <h3><span class="dot-teal"></span> Completed Tasks</h3>
+              <ul id="handoverCompleted" class="handover-list"></ul>
+            </div>
+            <div class="handover-block">
+              <h3><span class="dot-amber"></span> Pending Tasks</h3>
+              <ul id="handoverPending" class="handover-list"></ul>
+            </div>
+            <div class="handover-block">
+              <h3><span class="dot-blue"></span> Important Patient Notes</h3>
+              <ul id="handoverNotes" class="handover-list"></ul>
+            </div>
+            <div class="handover-block">
+              <h3><span class="dot-red"></span> Needs Attention — Next Shift</h3>
+              <ul id="handoverAttention" class="handover-list"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= NOTIFICATIONS ============================= -->
+      <section class="dashboard-section" id="section-notifications" hidden>
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Notifications</h2>
+              <p>New instructions, task reminders and schedule updates.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="markAllReadBtn">Mark all as read</button>
+          </div>
+          <div id="notificationList" class="notification-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================= MY SHIFT ============================= -->
+      <section class="dashboard-section" id="section-shift" hidden>
+        <div class="shift-grid">
+          <div class="panel shift-panel">
+            <h2>Current Shift</h2>
+            <div class="shift-info-grid">
+              <div><span class="shift-label">Shift</span><strong id="shiftLabel">Morning · 7:00 AM – 3:00 PM</strong></div>
+              <div><span class="shift-label">Ward</span><strong id="shiftWard">Ward B · General Medicine</strong></div>
+              <div><span class="shift-label">Patients Assigned</span><strong id="shiftPatientCount">—</strong></div>
+              <div><span class="shift-label">Supervising Doctor</span><strong id="shiftDoctor">Dr. Aman Verma</strong></div>
+            </div>
+            <div class="shift-progress">
+              <div class="shift-progress-head"><span>Shift progress</span><span id="shiftProgressLabel">—</span></div>
+              <div class="progress-track"><div class="progress-fill" id="shiftProgressFill"></div></div>
+            </div>
+          </div>
+          <div class="panel shift-panel">
+            <h2>Upcoming Shift</h2>
+            <p class="shift-next">Evening · 3:00 PM – 11:00 PM</p>
+            <p class="shift-next-nurse">Handover to: <strong>Nurse Alok Sen</strong></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= PROFILE ============================= -->
+      <section class="dashboard-section" id="section-profile" hidden>
+        <div class="panel profile-panel">
+          <div class="profile-header">
+            <div class="avatar avatar-lg">RK</div>
+            <div>
+              <h2>Riya Kapoor</h2>
+              <p>Registered Nurse · Ward B, General Medicine</p>
+            </div>
+          </div>
+          <div class="profile-details">
+            <div><span class="shift-label">Employee ID</span><strong>SN-NUR-1042</strong></div>
+            <div><span class="shift-label">Hospital</span><strong>Sunrise Multi-Specialty Hospital</strong></div>
+            <div><span class="shift-label">Email</span><strong>riya.kapoor@sunrisehospital.org</strong></div>
+            <div><span class="shift-label">Phone</span><strong>+91 98XXX XXXXX</strong></div>
+            <div><span class="shift-label">Reporting Doctor</span><strong>Dr. Aman Verma</strong></div>
+            <div><span class="shift-label">Access Level</span><strong>Nurse — Ward B only</strong></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ============================= URGENT ALERT MODAL ============================= -->
+<div class="modal-overlay" id="urgentModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="urgentModalTitle">
+    <div class="modal-head">
+      <h2 id="urgentModalTitle">Report Urgent Patient Condition</h2>
+      <button class="icon-btn" id="urgentModalClose" aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <p class="modal-sub">This sends an immediate alert to the assigned doctor and hospital admin. Use only for conditions that need urgent clinical attention.</p>
+
+    <form id="urgentForm">
+      <label class="field">
+        <span>Patient</span>
+        <select id="urgentPatient" required></select>
+      </label>
+      <label class="field">
+        <span>Urgency level</span>
+        <select id="urgentLevel" required>
+          <option value="critical">Critical — immediate response needed</option>
+          <option value="high">High — respond within minutes</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>What's happening?</span>
+        <textarea id="urgentDesc" rows="4" placeholder="Describe the observed condition…" required></textarea>
+      </label>
+      <p class="field-note">This report notifies staff only — it does not diagnose the patient or suggest treatment.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="urgentCancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-urgent">Send Alert</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
